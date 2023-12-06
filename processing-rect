@@ -1,0 +1,33 @@
+//아두이노에서 0 ~ 100까지 랜덤으로 변수를 받아 프로세싱에서 막대 그래프로 표현하는 프로그램
+아두이노
+void setup(){
+  Serial.begin(9600);
+  randomSeed(millis());
+}
+
+void loop(){
+  int r = random(0, 101);
+  Serial.println(r);
+  delay(500);
+}
+
+프로세싱
+import processing.serial.*;
+Serial p;
+
+void setup() {
+  p = new Serial(this, "COM4", 9600);
+  fill(0, 255, 255);
+}
+
+void draw() {
+  if (p.available() > 0) {
+    String m = p.readStringUntil('\n');
+    if (m != null) {
+      int n = int(m.trim());
+      background(0);
+      text(n, 2, 12);
+      rect(25, 100 - n, 50, n);
+    }
+  }
+}
